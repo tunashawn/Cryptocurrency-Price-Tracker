@@ -25,6 +25,10 @@ before access the website.
 The website is very simple. User input the symbol (example: BTC for Bitcoin) of a coin to get
 its latest value in USDT and market price history (history price is only retrieved from sqlite database)
 
+Disclaimer: This project use api from Binance, responses from Binance does not show name of the
+crypto but only symbol. For the ease of development, everything in this state will use only symbol
+to identify cryptocurrencies.
+
 ## Access through internet
 In this instruction, I will use ngrok to get a free domain.
 It will simply expose a port in your network to the internet.
