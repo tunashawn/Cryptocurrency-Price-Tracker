@@ -17,9 +17,13 @@ Then run the following commands:
 
 With the containers are running, you can access the website on http://localhost:3000.
 
-**IMPORTANT**: After server is running, please wait for the log
+**IMPORTANT**: After Go server is running, please wait for the log
 "`INFO bulk insert count=...`" appears to let server initialize its data
 before access the website.
+
+## How to use
+The website is very simple. User input the symbol (example: BTC for Bitcoin) of a coin to get
+its latest value in USDT and market price history (history price is only retrieved from sqlite database)
 
 ## Access through internet
 In this instruction, I will use ngrok to get a free domain.
@@ -44,5 +48,6 @@ it limits what I can do in this version:
 * Having the worker deployed independently to fetch data from multiple source
 * Using redis instead of mem-cache to read the latest data collected from worker
 * Using nginx to route traffics to the scalable server
+* Store and display more information of cryptocurrency
 
 With future this design, the server can auto-scale horizontally with the traffic.
