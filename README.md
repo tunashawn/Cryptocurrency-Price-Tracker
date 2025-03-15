@@ -2,6 +2,9 @@
 This project is an assignment for one of my interview. It asks
 for a simple website to track a single cryptocurrency price.
 
+## Tech stack
+Go, Vite, Sqlite, caching using mem-cache, docker, docker compose
+
 ## How to run
 Make sure your computer installed docker and docker compose.
 Then run the following commands:
@@ -25,7 +28,8 @@ It will simply expose a port in your network to the internet.
 Follow this instruction: https://ngrok.com/downloads to install ngrok, 
 get a free account and get a free random domain in under 3 minutes.
 
-After ngrok is running, just use the domain `https://{{random-word}}.ngrok-free.app` displayed on your terminal " to 
+After ngrok is running and bound with your port 3000, just use 
+the domain `https://{{random-word}}.ngrok-free.app` displayed on your terminal " to 
 access the website over the internet ![img.png](img.png)
 
 ## Screenshots
