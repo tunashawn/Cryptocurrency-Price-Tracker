@@ -115,7 +115,7 @@ func (s *SqliteRepositoryTestSuite) TestGetLatestPrice_NonExistentSymbol() {
 
 func (s *SqliteRepositoryTestSuite) TestGetPriceHistory_NoDataInRange() {
 	// Arrange
-	results, err := s.repository.GetPriceOfTheLast24h(models.PriceDatum{Symbol: "NOTEXISTSYMBOL"})
+	results, err := s.repository.GetPriceOfTheLast24h(models.PriceDatum{Symbol: "ABC"})
 
 	// Assert
 	assert.Nil(s.T(), err)

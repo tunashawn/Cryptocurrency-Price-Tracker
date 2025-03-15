@@ -56,7 +56,7 @@ func createNewTableIfNotExist(db *bun.DB) error {
 func setIndexes(db *bun.DB) error {
 	_, err := db.NewCreateIndex().
 		Model(&models.PriceDatum{}).
-		Index("idx_price_data_symbol_currency_timestamp").
+		Index("idx_crypto_price_symbol_currency_timestamp").
 		Column("symbol", "currency", "timestamp").
 		IfNotExists().
 		Exec(context.Background())

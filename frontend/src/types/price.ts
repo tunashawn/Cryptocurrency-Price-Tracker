@@ -2,7 +2,7 @@ export interface PriceData {
   timestamp: string
   symbol: string
   currency: string
-  latest_price: number
+  price: number
 }
 
 export interface ApiResponse<T> {

@@ -25,7 +25,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ priceHistory, symbol }) => {
     datasets: [
       {
         label: `${symbol}/USDT Price`,
-        data: priceHistory.map(data => data.latest_price),
+        data: priceHistory.map(data => data.price),
         fill: true,
         backgroundColor: (context: ScriptableContext<'line'>) => {
           const ctx = context.chart.ctx;

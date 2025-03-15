@@ -86,7 +86,7 @@ const CryptoPriceTracker = () => {
             placeholder="Enter cryptocurrency symbol (e.g., BTC)"
             value={inputSymbol}
             onChange={handleChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             borderWidth={2}
             borderRightRadius="0"
             _focus={{

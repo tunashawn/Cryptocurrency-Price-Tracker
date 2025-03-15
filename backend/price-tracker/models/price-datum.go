@@ -8,11 +8,11 @@ import (
 )
 
 type PriceDatum struct {
-	bun.BaseModel `json:"-" bun:"table:price_data"`
+	bun.BaseModel `json:"-" bun:"table:crypto_price"`
 	Timestamp     time.Time `json:"timestamp,omitzero" bun:"timestamp"`
 	Symbol        string    `json:"symbol,omitempty" bun:"symbol"`
 	Currency      string    `json:"currency,omitempty" bun:"currency"`
-	Price         float64   `json:"latest_price,omitempty" bun:"latest_price"`
+	Price         float64   `json:"price,omitempty" bun:"price"`
 }
 
 func NewPriceDatumFromBinanceResult(res BinanceResult, timestamp time.Time) (PriceDatum, error) {

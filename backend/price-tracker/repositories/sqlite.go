@@ -56,10 +56,21 @@ func (s *SqliteRepositoryImpl) GetLatestPrice(datum models.PriceDatum) (*models.
 func (s *SqliteRepositoryImpl) GetPriceOfTheLast24h(req models.PriceDatum) ([]models.PriceDatum, error) {
 	var res []models.PriceDatum
 
-	err := s.db.NewSelect().
-		Model(&req).
-		Where("symbol = ? AND timestamp >= datetime('now', '-1 day')", req.Symbol).
-		Order("timestamp DESC").
+	query := `
+			WITH Numbered AS (
+				SELECT symbol, timestamp, price,
+				ROW_NUMBER() OVER () AS rn,
+				COUNT(*) OVER () AS total_count
+			FROM crypto_price
+			WHERE symbol = ?
+			AND timestamp >= DATETIME('now', '-1 day')
+			ORDER BY timestamp ASC
+			)
+			SELECT timestamp, symbol, price
+			FROM Numbered
+			WHERE (rn - 1) % (total_count / 30 + 1) = 0;`
+
+	err := s.db.NewRaw(query, req.Symbol).
 		Scan(context.Background(), &res)
 	if err != nil {
 		return nil, fmt.Errorf("read: %w", err)
@@ -72,7 +83,7 @@ func (s *SqliteRepositoryImpl) GetAllCryptoInfo() ([]models.PriceDatum, error) {
 	res := make([]models.PriceDatum, 0)
 
 	err := s.db.
-		NewRaw("SELECT DISTINCT symbol FROM ?", bun.Ident("price_data")).
+		NewRaw("SELECT DISTINCT symbol FROM ?", bun.Ident("crypto_price")).
 		Scan(context.Background(), &res)
 	if err != nil {
 		return nil, fmt.Errorf("query: %w", err)

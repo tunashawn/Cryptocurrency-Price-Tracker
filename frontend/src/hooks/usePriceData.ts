@@ -63,7 +63,7 @@ export const usePriceData = (symbol: string): PriceState => {
           throw new Error(historyResponse.data.meta.message || "Failed to fetch price history");
         }
 
-        const currentPrice = currentPriceResponse.data.data?.latest_price ?? null;
+        const currentPrice = currentPriceResponse.data.data?.price ?? null;
         const filteredHistory = Array.isArray(historyResponse.data.data)
           ? filterLast24Hours(historyResponse.data.data)
           : [];
