@@ -9,9 +9,9 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) GetSymbolList() ([]string, error) {
+func (m *MockRepository) GetAllCryptoInfo() ([]models.PriceDatum, error) {
 	args := m.Called()
-	return args.Get(0).([]string), args.Error(1)
+	return args.Get(0).([]models.PriceDatum), args.Error(1)
 }
 
 func (m *MockRepository) Insert(datum models.PriceDatum) error {

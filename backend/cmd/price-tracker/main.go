@@ -51,6 +51,8 @@ func main() {
 	// Router
 	r := gin.Default()
 
+	r.GET("/list/name", controller.GetCryptoList)
+
 	price := r.Group("/price/")
 	{
 		price.GET("/latest", controller.GetLatestPrice)

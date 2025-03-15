@@ -9,10 +9,10 @@ import (
 
 type PriceDatum struct {
 	bun.BaseModel `json:"-" bun:"table:price_data"`
-	Timestamp     time.Time `json:"timestamp" bun:"timestamp"`
-	Symbol        string    `json:"symbol" bun:"symbol"`
-	Currency      string    `json:"currency" bun:"currency"`
-	Price         float64   `json:"latest_price" bun:"latest_price"`
+	Timestamp     time.Time `json:"timestamp,omitzero" bun:"timestamp"`
+	Symbol        string    `json:"symbol,omitempty" bun:"symbol"`
+	Currency      string    `json:"currency,omitempty" bun:"currency"`
+	Price         float64   `json:"latest_price,omitempty" bun:"latest_price"`
 }
 
 func NewPriceDatumFromBinanceResult(res BinanceResult, timestamp time.Time) (PriceDatum, error) {

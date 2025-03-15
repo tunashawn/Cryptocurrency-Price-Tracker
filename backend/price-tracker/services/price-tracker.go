@@ -21,6 +21,8 @@ type PriceTrackingService interface {
 	GetPriceOfTheLast24h(req models.PriceDatum) ([]models.PriceDatum, error)
 	// IsSymbolValid returns true if them symbol is valid and exist
 	IsSymbolValid(symbol string) bool
+	// GetCryptoList return all crypto basic information
+	GetCryptoList() ([]models.PriceDatum, error)
 }
 
 type PriceTrackingServiceImpl struct {
@@ -102,4 +104,8 @@ func (p *PriceTrackingServiceImpl) IsSymbolValid(symbol string) bool {
 	}
 
 	return false
+}
+
+func (p *PriceTrackingServiceImpl) GetCryptoList() ([]models.PriceDatum, error) {
+	return p.repository.GetAllCryptoInfo()
 }

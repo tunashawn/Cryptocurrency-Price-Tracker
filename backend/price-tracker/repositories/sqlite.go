@@ -68,8 +68,8 @@ func (s *SqliteRepositoryImpl) GetPriceOfTheLast24h(req models.PriceDatum) ([]mo
 	return res, nil
 }
 
-func (s *SqliteRepositoryImpl) GetSymbolList() ([]string, error) {
-	res := make([]string, 0)
+func (s *SqliteRepositoryImpl) GetAllCryptoInfo() ([]models.PriceDatum, error) {
+	res := make([]models.PriceDatum, 0)
 
 	err := s.db.
 		NewRaw("SELECT DISTINCT symbol FROM ?", bun.Ident("price_data")).

@@ -2,12 +2,11 @@ package controllers
 
 import (
 	gin_test_setup "backend/internal/gin-test-setup"
+	"backend/internal/response"
+	"backend/price-tracker/models"
 	"encoding/json"
 	"errors"
 	"testing"
-
-	"backend/internal/response"
-	"backend/price-tracker/models"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -16,6 +15,11 @@ import (
 // MockPriceTrackingService implements services.PriceTrackingService
 type MockPriceTrackingService struct {
 	mock.Mock
+}
+
+func (m *MockPriceTrackingService) GetCryptoList() ([]models.PriceDatum, error) {
+	args := m.Called()
+	return args.Get(0).([]models.PriceDatum), args.Error(1)
 }
 
 func (m *MockPriceTrackingService) IsSymbolValid(symbol string) bool {
@@ -277,6 +281,89 @@ func TestPriceTrackerControllerImpl_GetPriceHistory(t *testing.T) {
 			mockPriceTrackingService.On("IsSymbolValid", mock.Anything).Return(tt.args.valid)
 
 			p.GetPriceHistory(ctx.Context)
+
+			var get TestResponseData
+			json.Unmarshal([]byte(ctx.GetResponseBody()), &get)
+
+			assert.Equal(t, tt.want.res.Meta, get.Meta)
+			assert.Equal(t, tt.want.res.Data, get.Data)
+		})
+	}
+}
+
+func TestPriceTrackerControllerImpl_GetCryptoList(t *testing.T) {
+	type TestResponseData struct {
+		Meta response.Meta       `json:"meta"`
+		Data []models.PriceDatum `json:"data"`
+	}
+	type args struct {
+		path  string
+		valid bool
+	}
+	type want struct {
+		res     TestResponseData
+		mockErr error
+	}
+	tests := []struct {
+		name string
+		args args
+		want want
+	}{
+		{
+			name: "success",
+			args: args{
+				path:  "/",
+				valid: true,
+			},
+			want: want{
+				res: TestResponseData{
+					Meta: response.Meta{
+						Code:    200,
+						Message: "ok",
+					},
+					Data: []models.PriceDatum{
+						{
+							Symbol: "ABC",
+						},
+						{
+							Symbol: "BCD",
+						},
+					},
+				},
+				mockErr: nil,
+			},
+		},
+		{
+			name: "internal error",
+			args: args{
+				path:  "/",
+				valid: true,
+			},
+			want: want{
+				res: TestResponseData{
+					Meta: response.Meta{
+						Code:    500,
+						Message: "error",
+					},
+					Data: nil,
+				},
+				mockErr: errors.New("error"),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := gin_test_setup.NewGinTestContext("GET", tt.args.path)
+
+			mockPriceTrackingService := &MockPriceTrackingService{}
+
+			p := &PriceTrackerControllerImpl{
+				priceTrackingService: mockPriceTrackingService,
+			}
+
+			mockPriceTrackingService.On("GetCryptoList", mock.Anything).Return(tt.want.res.Data, tt.want.mockErr)
+
+			p.GetCryptoList(ctx.Context)
 
 			var get TestResponseData
 			json.Unmarshal([]byte(ctx.GetResponseBody()), &get)

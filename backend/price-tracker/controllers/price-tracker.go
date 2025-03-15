@@ -15,6 +15,8 @@ type PriceTrackerController interface {
 	// GetPriceHistory handles requests to get the price history
 	// current supports only 24h interval
 	GetPriceHistory(ctx *gin.Context)
+	// GetCryptoList handles requests to get list of crypto
+	GetCryptoList(ctx *gin.Context)
 }
 
 type PriceTrackerControllerImpl struct {
@@ -102,4 +104,14 @@ func (p *PriceTrackerControllerImpl) getInterval(ctx *gin.Context) (string, bool
 	}
 
 	return interval, true
+}
+
+func (p *PriceTrackerControllerImpl) GetCryptoList(ctx *gin.Context) {
+	list, err := p.priceTrackingService.GetCryptoList()
+	if err != nil {
+		p.httpResponse.InternalServerError(err, ctx)
+		return
+	}
+
+	p.httpResponse.Success(list, ctx)
 }
