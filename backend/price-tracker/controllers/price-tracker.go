@@ -30,11 +30,13 @@ func NewPriceTrackerController(priceTrackingService services.PriceTrackingServic
 
 // GetLatestPrice handles requests to get the latest price of an symbol
 func (p *PriceTrackerControllerImpl) GetLatestPrice(ctx *gin.Context) {
+	// Verify the request
 	symbol, ok := p.getSymbol(ctx)
 	if !ok {
 		return
 	}
 
+	// Process the request
 	req := models.PriceDatum{
 		Symbol: symbol,
 	}
@@ -51,6 +53,7 @@ func (p *PriceTrackerControllerImpl) GetLatestPrice(ctx *gin.Context) {
 // GetPriceHistory handles requests to get the price history
 // current supports only 24h interval
 func (p *PriceTrackerControllerImpl) GetPriceHistory(ctx *gin.Context) {
+	// Verify the request
 	symbol, ok := p.getSymbol(ctx)
 	if !ok {
 		return
@@ -60,6 +63,7 @@ func (p *PriceTrackerControllerImpl) GetPriceHistory(ctx *gin.Context) {
 		return
 	}
 
+	// Process the request
 	req := models.PriceDatum{
 		Symbol: symbol,
 	}

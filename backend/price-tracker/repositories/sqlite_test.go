@@ -26,10 +26,10 @@ func (s *SqliteRepositoryTestSuite) SetupSuite() {
 		SqliteURL: ":memory:",
 	}
 
-	db, err := db.NewSqliteDB(cfg)
+	Db, err := db.NewSqliteDB(cfg)
 	assert.NoError(s.T(), err)
-	s.db = db
-	s.repository = NewSqliteRepository(db)
+	s.db = Db
+	s.repository = NewSqliteRepository(Db)
 }
 
 func (s *SqliteRepositoryTestSuite) TearDownSuite() {
